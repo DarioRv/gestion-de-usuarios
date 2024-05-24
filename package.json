@@ -1,0 +1,22 @@
+{
+  "name": "clase-express",
+  "main": "./index.js",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "nodemon": "^3.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
+  },
+  "scripts": {
+    "start": "bun run index.js",
+    "start:dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "DEBUG=express:* nodemon index.js"
+  }
+}
