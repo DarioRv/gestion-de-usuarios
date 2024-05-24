@@ -9,4 +9,4 @@ mongoose
     console.log("Error de conexión con la base de datos", err);
   });
 
-module.exports = { mongoose };
+module.exports = mongoose;

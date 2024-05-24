@@ -67,3 +67,5 @@ userCtrl.deleteUser = async (req, res) => {
     });
   }
 };
+
+module.exports = userCtrl;
