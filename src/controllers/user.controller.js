@@ -1,3 +1,5 @@
+const { isValidObjectId } = require("mongoose");
+
 const User = require("../models/user.model");
 const userCtrl = {};
 
@@ -25,16 +27,38 @@ userCtrl.createUser = async (req, res) => {
 };
 
 userCtrl.getUser = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.json({
-    status: "200",
-    message: "Usuario encontrado",
-    data: user,
-  });
+  if (!isValidObjectId(req.params.id)) {
+    return res.status(400).json({
+      status: "400",
+      message: "El ID no es válido",
+    });
+  }
+
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({
+      status: "200",
+      message: "Usuario encontrado",
+      data: user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "500",
+      message: "Internal server error",
+      data: err,
+    });
+  }
 };
 
 userCtrl.updateUser = async (req, res) => {
   const { id } = req.params;
+  if (!isValidObjectId(id)) {
+    return res.status(400).json({
+      status: "400",
+      message: "El ID no es válido",
+    });
+  }
+
   const user = req.body;
   try {
     await User.findByIdAndUpdate(id, { $set: user }, { new: true });
@@ -44,15 +68,22 @@ userCtrl.updateUser = async (req, res) => {
       data: user,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "400",
-      message: "Error al actualizar el usuario",
+    res.status(500).json({
+      status: "500",
+      message: "Internal server error",
       data: err,
     });
   }
 };
 
 userCtrl.deleteUser = async (req, res) => {
+  if (!isValidObjectId(req.params.id)) {
+    return res.status(400).json({
+      status: "400",
+      message: "El ID no es válido",
+    });
+  }
+
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({
@@ -60,9 +91,9 @@ userCtrl.deleteUser = async (req, res) => {
       message: "Usuario eliminado",
     });
   } catch (err) {
-    res.status(400).json({
-      status: "400",
-      message: "Error al eliminar el usuario",
+    res.status(500).json({
+      status: "500",
+      message: "Internal server error",
       data: err,
     });
   }
